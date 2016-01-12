@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import letter.softdream.com.LetterAdapter;
+import com.github.anzewei.alphabet.AlphabetIndexAdapter;
 
 
-public class FriendAdapter extends LetterAdapter<Friend> {
+public class FriendAdapter extends AlphabetIndexAdapter<Friend> {
 
     private LayoutInflater mInflater;
     private Context mContext;
@@ -30,7 +30,7 @@ public class FriendAdapter extends LetterAdapter<Friend> {
         }else {
             textView = (TextView) convertView;
         }
-        textView.setText(String.valueOf(getKey(position)));
+        textView.setText(getSections()[getSectionForPosition(position)]);
         return textView;
     }
 

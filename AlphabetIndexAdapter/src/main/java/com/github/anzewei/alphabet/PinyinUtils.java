@@ -1,4 +1,4 @@
-package letter.softdream.com;
+package com.github.anzewei.alphabet;
 
 import java.util.ArrayList;
 

@@ -1,15 +1,17 @@
-package letter.softdream.com;
-
-import java.util.Collection;
-import java.util.LinkedList;
+package com.github.anzewei.alphabet;
 
 import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.SectionIndexer;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
- * ClassName : LetterAdapter <br>
+ * ClassName : AlphabetIndexAdapter <br>
  * 功能描述： <br>
  * History <br>
  * Create User: An Zewei <br>
@@ -17,26 +19,27 @@ import android.widget.BaseAdapter;
  * Update User: <br>
  * Update Date:
  */
-public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends BaseAdapter {
+public abstract class AlphabetIndexAdapter<T extends AlphabetIndexAdapter.ILetterAble> extends BaseAdapter implements SectionIndexer {
 
     /**
      * 索引是否显示
      */
     protected boolean mbShowKey = false;
     /**
-     *       index        Key          value(key po)     真实List          虚拟List<br>
-     *     |   0   |    |   A   |        |   0   |    |    A1       |    |  A       |<br>
-     *     |   1   |    |   B   |        |   4   |    |    A2       |    |    A1    |<br>
-     *     |   2   |                                  |    A3       |    |    A2    |<br>
-     *     |   3   |                                  |    B1       |    |    A3    |<br>
-     *     |   4   |                                  |    B2       |    |  B       |<br>
-     *     |   5   |                                                     |    B1    |<br>
-     *     |   6   |                                                     |    B2    |<br>
-     *                                      
+     * index        Key          value(key po)     真实List          虚拟List<br>
+     * |   0   |    |   A   |        |   0   |    |    A1       |    |  A       |<br>
+     * |   1   |    |   B   |        |   4   |    |    A2       |    |    A1    |<br>
+     * |   2   |                                  |    A3       |    |    A2    |<br>
+     * |   3   |                                  |    B1       |    |    A3    |<br>
+     * |   4   |                                  |    B2       |    |  B       |<br>
+     * |   5   |                                                     |    B1    |<br>
+     * |   6   |                                                     |    B2    |<br>
+     * <p/>
      * <br> 由上可知 每个索引对应的数据开始位置为Position = value - index;
      */
     protected SparseIntArray mIndexPosition = new SparseIntArray();
     protected LinkedList<T> mArrayList = new LinkedList<T>();
+    private static final String[] sAlpha = new String[]{"#", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
     /**
      * 清除数据
@@ -49,7 +52,7 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
 
     /**
      * 设置是否根据索引分组
-     * 
+     *
      * @param show
      */
     public void setShowKey(boolean show) {
@@ -59,21 +62,23 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
 
     /**
      * 索引组是否显示
-     * 
+     *
      * @return
      */
     public boolean isKeyShow() {
         return mbShowKey;
     }
 
+
     /**
      * 获取分组名对应的位置 如果没有返回-1
-     * 
-     * @param key
-     * @return
+     *
+     * @param sectionIndex
+     * @return 获取分组名对应的位置 如果没有返回-1
      */
-    public int getGroupPosition(char key) {
-        key = char2Key(key);
+    @Override
+    public int getPositionForSection(int sectionIndex) {
+        int key = sectionIndex;
         int position = mIndexPosition.get(key, -1);
         if (!mbShowKey) {
             position -= mIndexPosition.indexOfKey(key);
@@ -91,7 +96,7 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
 
     /**
      * 1代表分组，0代表child
-     * 
+     *
      * @see android.widget.BaseAdapter#getItemViewType(int)
      */
     @Override
@@ -102,43 +107,36 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
         return 0;
     }
 
-    /**
-     * 指定位置的索引值
-     * @param position
-     * @return
-     */
-    public char getKey(int position) {
+    @Override
+    public int getSectionForPosition(int position) {
         if (isGroup(position)) {
-            return (char) mIndexPosition.keyAt(mIndexPosition.indexOfValue(position));
+            return mIndexPosition.keyAt(mIndexPosition.indexOfValue(position));
         }
         char first = getItem(position).getLetter().charAt(0);
         return char2Key(first);
     }
 
     /**
-     * 
-     * @param key 指定的索引组
+     * @param keyindex 指定的索引组
      * @return 指定索引组的个数
      */
-    public int getGroupCount(char key) {
-        int keyindex = char2Key(key);
+    public int getGroupCount(int keyindex) {
         int value = mIndexPosition.get(keyindex, -1);
         if (value < 0) {
             return 0;
         }
-        int next = mArrayList.size()+ mIndexPosition.size();
-        int position = mIndexPosition.indexOfKey(key);
+        int next = mArrayList.size() + mIndexPosition.size();
+        int position = mIndexPosition.indexOfKey(keyindex);
         if (position < mIndexPosition.size() - 1) {// not last
             next = mIndexPosition.valueAt(position + 1);
         }
-        return next - value -1;//由于有个索引项，所以要－1
+        return next - value - 1;//由于有个索引项，所以要－1
     }
 
     /**
      * 去除掉索引组的真实地址
-     * 
-     * @param position
-     *            ListView的原始地址
+     *
+     * @param position ListView的原始地址
      * @return
      */
     public int getFlattenedPos(int position) {
@@ -158,6 +156,7 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
 
     /**
      * 添加多条数据
+     *
      * @param items
      */
     public void addAll(Collection<? extends T> items) {
@@ -169,7 +168,7 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
 
     /**
      * 新加
-     * 
+     *
      * @param letterAble
      */
     public void addItem(T letterAble) {
@@ -206,15 +205,14 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
 
     /**
      * 转换为索引
+     *
      * @param a
      * @return
      */
-    private char char2Key(char a) {
+    private int char2Key(char a) {
         a = Character.toUpperCase(a);
-        if (a <= 'Z' && a >= 'A') {
-            return a;
-        }
-        return '#';
+        int index = Arrays.binarySearch(sAlpha, String.valueOf(a));
+        return Math.max(0, index);
     }
 
     /**
@@ -229,10 +227,7 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
     }
 
     private boolean isGroup(int position) {
-        if (!mbShowKey) {
-            return false;
-        }
-        return mIndexPosition.indexOfValue(position) != -1;
+        return mbShowKey && mIndexPosition.indexOfValue(position) != -1;
     }
 
     /**
@@ -246,32 +241,33 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
         position = getFlattenedPos(position);
         return mArrayList.get(position);
     }
+
     /**
      * this method will cause inteactive bugs..
-     * 
-     * @param position
+     *
+     * @param position index
      */
     public void delItem(int position) {
-        int keyindex =0;
+        int keyindex = 0;
         int deleteCount = 0;
         if (!isGroup(position)) {
-            position=getFlattenedPos(position);
-           char first= mArrayList.remove(position).getLetter().charAt(0);
+            position = getFlattenedPos(position);
+            char first = mArrayList.remove(position).getLetter().charAt(0);
             int key = char2Key(first);
             keyindex = mIndexPosition.indexOfKey(key);
-            deleteCount=1;
-            if (getGroupCount(first) == 1) {
+            deleteCount = 1;
+            if (getGroupCount(key) == 1) {
                 mIndexPosition.removeAt(keyindex);
                 deleteCount++;
                 keyindex--;
             }
-        }else {
+        } else {
             keyindex = mIndexPosition.indexOfValue(position);
             position -= keyindex;
-            int last=mArrayList.size();
-            if (mIndexPosition.size() > keyindex+1) {
-                int nextValue = mIndexPosition.valueAt(keyindex+1);
-                last = nextValue-keyindex-1;
+            int last = mArrayList.size();
+            if (mIndexPosition.size() > keyindex + 1) {
+                int nextValue = mIndexPosition.valueAt(keyindex + 1);
+                last = nextValue - keyindex - 1;
             }
             for (int i = position; i < last; i++) {
                 mArrayList.remove(i);
@@ -284,9 +280,9 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
         offsetGroup(keyindex, -deleteCount);
         notifyDataSetChanged();
     }
-    
-    private void offsetGroup(int groupIndex,int offset) {
-        
+
+    private void offsetGroup(int groupIndex, int offset) {
+
         int size = mIndexPosition.size();
         for (int i = groupIndex + 1; i < size; i++) {
             int tmp = mIndexPosition.valueAt(i);
@@ -295,10 +291,10 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
             mIndexPosition.put(nextkey, tmp);
         }
     }
-    
+
     /**
      * @see android.widget.Adapter#getView(int, android.view.View,
-     *      android.view.ViewGroup)
+     * android.view.ViewGroup)
      */
     @Override
     public final View getView(int position, View convertView, ViewGroup parent) {
@@ -311,18 +307,11 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
 
     /**
      * 获取索引view
-     * 
-     * @param groupposition
-     *            索引值
-     * @param convertView
-     * @param parent
-     * @return
      */
     protected abstract View getKeyView(int position, View convertView, ViewGroup parent);
 
     /**
-     * @param item
-     *            数据
+     * @param item        数据
      * @param convertView
      * @param parent
      * @return
@@ -336,6 +325,12 @@ public abstract class LetterAdapter<T extends LetterAdapter.ILetterAble> extends
     public long getItemId(int position) {
         return position;
     }
+
+    @Override
+    public String[] getSections() {
+        return sAlpha;
+    }
+
 
     public interface ILetterAble {
         String getLetter();

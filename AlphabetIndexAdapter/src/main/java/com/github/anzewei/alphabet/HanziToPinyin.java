@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package letter.softdream.com;
+package com.github.anzewei.alphabet;
 
 import java.text.Collator;
 import java.util.ArrayList;

@@ -3,10 +3,10 @@ package lettersample.softdream.com;
 
 import android.text.TextUtils;
 
-import letter.softdream.com.LetterAdapter;
-import letter.softdream.com.PinyinUtils;
+import com.github.anzewei.alphabet.AlphabetIndexAdapter;
+import com.github.anzewei.alphabet.PinyinUtils;
 
-public class Friend implements LetterAdapter.ILetterAble {
+public class Friend implements AlphabetIndexAdapter.ILetterAble {
 
     public Friend(String name){
         this.name = name;
