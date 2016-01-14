@@ -2,9 +2,9 @@ apply plugin: 'com.android.library'
 
 ext {
     bintrayRepo = 'maven'
-    bintrayName = 'com.github.anzewei'
+    bintrayName = 'com.github.anzewei.alphabet'
 
-    publishedGroupId = 'com.github.anzewei'
+    publishedGroupId = 'com.github.anzewei.alphabet'
     libraryName = 'AlphabetIndexAdapter'
     artifact = 'AlphabetIndexAdapter'
 
@@ -47,5 +47,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
-apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+apply from: 'https://raw.githubusercontent.com/anzewei/JCenter/master/installv1.gradle'
+apply from: 'https://raw.githubusercontent.com/anzewei/JCenter/master/bintrayv1.gradle'

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 /**
  * ClassName : PinyinUtils <br>
- * 功能描述： {@link #HanziToPinyin}取自Frameworks<br>
+ * 功能描述： {@link HanziToPinyin}取自Frameworks<br>
  * History <br>
  * Create User: An Zewei <br>
  * Create Date: 2014-1-19 下午3:12:42 <br>
@@ -15,8 +15,8 @@ import java.util.ArrayList;
 public class PinyinUtils {
 
     /**
-     * @param input
-     * @return
+     * @param input Text
+     * @return alpha
      */
     public static char getPinYinAlpha(String input) {
         try {

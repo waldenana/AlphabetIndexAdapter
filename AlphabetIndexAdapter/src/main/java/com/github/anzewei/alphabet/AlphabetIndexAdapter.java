@@ -34,7 +34,7 @@ public abstract class AlphabetIndexAdapter<T extends AlphabetIndexAdapter.ILette
      * |   4   |                                  |    B2       |    |  B       |<br>
      * |   5   |                                                     |    B1    |<br>
      * |   6   |                                                     |    B2    |<br>
-     * <p/>
+     * <p>
      * <br> 由上可知 每个索引对应的数据开始位置为Position = value - index;
      */
     protected SparseIntArray mIndexPosition = new SparseIntArray();
