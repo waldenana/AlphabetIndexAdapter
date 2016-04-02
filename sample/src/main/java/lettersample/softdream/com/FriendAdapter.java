@@ -25,12 +25,11 @@ public class FriendAdapter extends AlphabetIndexAdapter<Friend> {
         TextView textView;
         if (convertView == null){
             textView = new TextView(mContext);
-            textView.setTextColor(Color.parseColor("#dcdcdc"));
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
         }else {
             textView = (TextView) convertView;
         }
-        textView.setText(getSections()[getSectionForPosition(position)]);
+        textView.setHint(getSections()[getSectionForPosition(position)]);
         return textView;
     }
 
