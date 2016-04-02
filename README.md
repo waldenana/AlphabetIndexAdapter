@@ -1,6 +1,8 @@
 # PageListLoader
 #使用方法
-
+<img width="320" src="https://github.com/anzewei/AlphabetIndexAdapter/raw/master/screenshort/device-2016-04-02-093903.png"/>
+<img width="320" src="https://github.com/anzewei/AlphabetIndexAdapter/raw/master/screenshort/device-2016-04-02-093940.png"/>
+<img width="320" src="https://github.com/anzewei/AlphabetIndexAdapter/raw/master/screenshort/device-2016-04-02-093955.png"/>
 ##1,配置gradle
 
 ``` groovy
